@@ -11,41 +11,38 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.diva.helloword.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-  //  private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+      super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-          val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-          v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-          insets
-        }
-        val EditTextUsername = findViewById< EditText >(R.id.TextUsername)
-        val EditTextPassword  = findViewById< EditText >(R.id.TextPassword)
-        val EditTextConfirmPassword  = findViewById< EditText >(R.id.TextConfirmPassword)
-        val btnRegister = findViewById<Button>(R.id.btnRegister)
 
-        btnRegister.setOnClickListener(){
-            val username = EditTextUsername.text.toString()
-            val password = EditTextPassword.text.toString()
-            val confirmPassword = EditTextConfirmPassword.text.toString()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-            if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        binding.btnRegister.setOnClickListener(){
+            val fullname = binding.textFullUsername.text.toString()
+            val username = binding.TextUsername.text.toString()
+            val password = binding.TextPassword.text.toString()
+            val confirmPassword = binding.TextConfirmPassword.text.toString()
+
+            if (fullname.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Semua kolom harus diisi", Toast.LENGTH_SHORT).show()
-            } else if (password != confirmPassword) {
-                Toast.makeText(this, "Password dan konfirmasi tidak cocok", Toast.LENGTH_SHORT).show()
+            } else if (fullname != "admin") {
+                Toast.makeText(this, "Fullname harus 'admin'", Toast.LENGTH_SHORT).show()
+            } else if (username != "admin") {
+                Toast.makeText(this, "Username harus 'admin'", Toast.LENGTH_SHORT).show()
+            } else if (password != "admin" || confirmPassword != "admin") {
+                Toast.makeText(this, "Password dan Konfirmasi harus 'admin'", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Registrasi berhasil untuk $username", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Registrasi berhasil untuk $fullname ($username)", Toast.LENGTH_LONG).show()
+
             }
-         }
+        }
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-
-        btnLogin.setOnClickListener(){
+        binding.btnLogin.setOnClickListener(){
             LoginDialog()
         }
     }

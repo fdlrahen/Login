@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val Username = intent.getStringExtra("USERNAME")?:""
+        binding.textFullName.setText(Username)
+
         binding.btnRegister.setOnClickListener(){
             val fullname = binding.textFullUsername.text.toString()
             val username = binding.TextUsername.text.toString()

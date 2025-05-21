@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import androidx.core.view.WindowInsetsCompat
 import com.diva.helloword.databinding.ActivityMainregisterBinding
 import android.content.Intent
+import android.widget.Toast
 
 class Mainregister : AppCompatActivity() {
     private lateinit var binding:ActivityMainregisterBinding
@@ -17,18 +18,29 @@ class Mainregister : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainregisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainRegisterLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        binding.btnregister.setOnClickListener(){
-            val Username = binding.textFullName.text.toString()
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra("USERNAME", Username)
+        binding.btnLogin.setOnClickListener(){
+            val Username = binding.editUsername.text.toString()
+            val Password = binding.editPassword.text.toString()
+            val registeredUsername = intent.getStringExtra("USERNAME")
+            val registeredPassword = intent.getStringExtra("PASSWORD")
+
+            if (Username.isEmpty() || Password.isEmpty()) {
+                Toast.makeText(this, "Username dan Password harus diisi", Toast.LENGTH_SHORT).show()
+            } else if (Username == registeredUsername && Password == registeredPassword) {
+                Toast.makeText(this, "Berhasil login", Toast.LENGTH_SHORT).show()
+
+                // Lanjut ke halaman utama atau dashboard
+                val intent = Intent(this, dashboard::class.java) // Ganti sesuai kebutuhanmu
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Username atau Password salah", Toast.LENGTH_SHORT).show()
             }
-            startActivity(intent)
-            finish()
         }
     }
 }
